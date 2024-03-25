@@ -1,0 +1,401 @@
+#include <iostream>
+#include<cstdlib>
+#include<cmath>
+#include<iomanip>
+#include<ctime>
+#include<omp.h>
+using namespace std;
+
+double get_time();
+int main(int argc, char* argv[])
+{
+	//Declaraciónes de matrices
+	 srand(time(NULL));
+	 int D=512;
+	 int N = atoi(argv[1]);
+	//Crear la matriz X
+    float** X= new float*[N];
+    for(int i= 0; i<N;i++)
+    {
+            X[i]=new float[D];
+    }
+    
+     //Crear matriz Wk   
+    float** Wk = new float*[D];
+    for(int i= 0; i<D;i++)
+    {
+            Wk[i]=new float[D];
+    }
+    
+    //Crear matriz Wk_T
+    float** Wk_T = new float*[D];
+    for(int i= 0; i<D;i++)
+    {
+            Wk_T[i]=new float[D];
+    }
+    
+    //Declaramos vector bK
+    float bK[D];
+    for(int i= 0; i<D;i++)
+    	{
+    		bK[i]= (float(rand()) / float(RAND_MAX) * 0.001) - 0.0005;
+    	}
+	
+    
+    //Crear matriz resultado Kn
+    float** Kn = new float*[N];
+    for(int i= 0; i<N;i++)
+    {
+            Kn[i]=new float[D];
+    }
+    
+    //Crear matriz Wq   
+    float** Wq = new float*[D];
+    for(int i= 0; i<D;i++)
+    {
+            Wq[i]=new float[D];
+    }
+    
+    //Crear matriz Wq_T
+    float** Wq_T = new float*[D];
+    for(int i= 0; i<D;i++)
+    {
+            Wq_T[i]=new float[D];
+    }
+    
+    //Declaramos vector bQ
+    float bQ[D];
+    for(int i= 0; i<D;i++)
+    	{
+    		bQ[i]= (float(rand()) / float(RAND_MAX) * 0.001) - 0.0005;
+    	}
+    
+    //Crear matriz resultado Q
+    float** Qn = new float*[N];
+    for(int i= 0; i<N;i++)
+    {
+            Qn[i]=new float[D];
+    }
+    
+    //Crear matriz Wv   
+    float** Wv = new float*[D];
+    for(int i= 0; i<D;i++)
+    {
+            Wv[i]=new float[D];
+    }
+    
+    //Crear matriz Wv_T
+    float** Wv_T = new float*[D];
+    for(int i= 0; i<D;i++)
+    {
+            Wv_T[i]=new float[D];
+    }
+    
+    //Declaramos vector bV
+    float bV[D];
+    for(int i= 0; i<D;i++)
+    	{
+    		bV[i]= (float(rand()) / float(RAND_MAX) * 0.001) - 0.0005;
+    	}
+    
+    //Crear matriz resultado V
+    float** Vn = new float*[N];
+    for(int i= 0; i<N;i++)
+    {
+            Vn[i]=new float[D];
+    }
+    
+    //Creación matriz A
+    float** A = new float*[N];
+    for(int i= 0; i<N;i++)
+    {
+            A[i]=new float[N];
+    }
+    
+    //Creación matriz Alfa
+    float** Alfa = new float*[N];
+    for(int i= 0; i<N;i++)
+    {
+            Alfa[i]=new float[N];
+    }
+    
+    //Creación matriz C
+    float** C = new float*[N];
+    for(int i= 0; i<N;i++)
+    {
+         C[i]=new float[N];
+    }
+    
+    //Inicialización matrices
+    //Rellenar matriz X con los valores establecidos.
+    for(int i= 0; i<N;i++)
+    {
+            for(int j=0;j<D;j++)
+            {
+				X[i][j] = (float(rand()) / float((RAND_MAX))) * 10;
+
+            }
+    }
+
+    //Rellenar matriz Wk
+    for(int i= 0; i<D;i++)
+    {
+            for(int j=0;j<D;j++)
+            {
+				Wk[i][j] = (float(rand()) / float(RAND_MAX) * 0.001) - 0.0005;
+				}
+    }
+    
+    //Rellenar matriz transpuesta de Wk
+    for(int i= 0; i<D;i++)
+    {
+            for(int j=0;j<D;j++)
+            {
+				Wk_T[i][j]=Wk[j][i];  
+            }
+    }
+
+    
+    //Rellenar matriz Wq
+    for(int i= 0; i<D;i++)
+    {
+            for(int j=0;j<D;j++)
+            {
+				Wq[i][j] = (float(rand()) / float(RAND_MAX) * 0.001) - 0.0005;
+				}
+    }
+    
+    
+    //Rellenar matriz transpuesta de Wq
+    for(int i= 0; i<D;i++)
+    {
+            for(int j=0;j<D;j++)
+            {
+				Wq_T[i][j]=Wq[j][i];  
+            }
+    }
+    
+    //Rellenar matriz Wv
+    for(int i= 0; i<D;i++)
+    {
+            for(int j=0;j<D;j++)
+            {
+				Wv[i][j] = (float(rand()) / float(RAND_MAX) * 0.001) - 0.0005;
+			}
+    }
+    
+    //Rellenar matriz transpuesta de Wk
+    for(int i= 0; i<D;i++)
+    {
+            for(int j=0;j<D;j++)
+            {
+				Wv_T[i][j]=Wv[j][i];  
+            }
+    }
+    
+    double ini = get_time();
+   
+    //Ejecución de matrices
+    //Calcular Kn.
+    float resK;
+    #pragma omp parallel for private (resK)
+    for(int i= 0; i<N;i++)
+    {
+        for(int j=0;j<D;j++)
+        {
+        	resK=0.0;
+			for(int k=0;k<D;k++)
+			{
+				resK+=Wk_T[j][k]*X[i][k];
+			}
+			Kn[i][j]=resK+bK[j];	
+        }
+    }
+
+    //Calcular Qn.
+    float resQ;
+    #pragma omp parallel for schedule (dynamic) private (resQ)
+    for(int i= 0; i<N;i++)
+    {
+        for(int j=0;j<D;j++)
+        {
+        	resQ=0.0;
+			for(int k=0;k<D;k++)
+			{
+				resQ+=Wq_T[j][k]*X[i][k];
+			}
+			Qn[i][j]=resQ+bQ[j];
+        }
+    }
+    
+
+    //Calcular Vn.
+    float resV;
+    #pragma omp parallel for private (resV)
+     for(int i= 0; i<N;i++)
+    {
+
+            for(int j=0;j<D;j++)
+            {
+            	resV=0.0;
+				for(int k=0;k<D;k++)
+				{
+					resV+=Wv_T[j][k]*X[i][k];
+				}
+				Vn[i][j]=resV+bV[j];
+            }
+    }
+   
+	//Calcular matriz A
+    float ecuacion2;
+    #pragma omp parallel for private (ecuacion2)
+    for(int i= 0; i<N;i++)
+    {
+
+            for(int j=0;j<N;j++)
+            {
+            	ecuacion2=0.0;
+				for(int k=0;k<D;k++)
+				{
+				ecuacion2+=Qn[i][k]*Kn[j][k];
+				}
+				A[i][j]=ecuacion2/sqrt(D);
+            }
+    }
+   
+	//Calcular matriz Alfa
+    float ecuacion3;
+    #pragma omp parallel for private (ecuacion3)
+    for(int i= 0; i<N;i++)
+    {
+
+            for(int j=0;j<N;j++)
+            {
+            	ecuacion3=0.0;
+				for(int k=0;k<N;k++)
+				{
+				ecuacion3+=exp(A[j][k]);
+				}
+				Alfa[j][i]=exp(A[j][i])/ecuacion3;
+            }
+    }
+    
+	//Calcular matriz C
+	#pragma omp parallel for
+    for(int i= 0; i<N;i++)
+    {
+
+            for(int j=0;j<D;j++)
+            {
+				for(int k=0;k<N;k++)
+				{
+				C[i][j]+=Alfa[i][k]*Vn[k][j];
+				}
+            }
+    } 
+    double fin = get_time();
+    
+    cout << "Tiempo de ejecucion: " << fin-ini << " segundos." << endl;
+        
+     //Borramos la matriz x
+    for(int i=0;i<N;i++)
+    {
+    	delete[] X[i];
+	}
+	delete[] X;
+	
+	//Borramos la matriz Wk
+    for(int i=0;i<D;i++)
+    {
+    	delete[] Wk[i];
+	}
+	delete[] Wk;
+	
+	//Borramos la matriz Wk_T
+    for(int i=0;i<D;i++)
+    {
+    	delete[] Wk_T[i];
+	}
+	delete[] Wk_T;
+	
+	//Borramos la matriz Kn
+    for(int i=0;i<N;i++)
+    {
+    	delete[] Kn[i];
+	}
+	delete[] Kn;
+	
+	//Borramos la matriz Wq
+    for(int i=0;i<D;i++)
+    {
+    	delete[] Wq[i];
+	}
+	delete[] Wq;
+	
+	//Borramos la matriz Wq_T
+    for(int i=0;i<D;i++)
+    {
+    	delete[] Wq_T[i];
+	}
+	delete[] Wq_T;
+	
+	//Borramos la matriz Qn
+    for(int i=0;i<N;i++)
+    {
+    	delete[] Qn[i];
+	}
+	delete[] Qn;
+	
+	//Borramos la matriz Wv
+    for(int i=0;i<D;i++)
+    {
+    	delete[] Wv[i];
+	}
+	delete[] Wv;
+	
+	//Borramos la matriz Wv_T
+    for(int i=0;i<D;i++)
+    {
+    	delete[] Wv_T[i];
+	}
+	delete[] Wv_T;
+	
+	//Borramos la matriz Vn
+    for(int i=0;i<N;i++)
+    {
+    	delete[] Vn[i];
+	}
+	delete[] Vn;
+	
+	//Borramos la matriz A
+    for(int i=0;i<N;i++)
+    {
+    	delete[] A[i];
+	}
+	delete[] A;
+	
+	//Borramos la matriz Alfa
+    for(int i=0;i<N;i++)
+    {
+    	delete[] Alfa[i];
+	}
+	delete[] Alfa;
+	
+	//Borramos la matriz C
+    for(int i=0;i<N;i++)
+    {
+    	delete[] C[i];
+	}
+	delete[] C;
+		
+}
+
+double get_time ()
+{
+	double time;
+	struct timespec t;
+	clock_gettime(CLOCK_REALTIME, &t);
+	time = (double)t.tv_sec + ((double)t.tv_nsec)/1.0e9;
+	
+	return time;
+}
