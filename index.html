@@ -1,5 +1,5 @@
 <!-- Botón que activa el modal -->
-<h1>Prueba11</h1>
+<h1>Prueba</h1>
 <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#codeModal">
   Ver Código
 </button>
@@ -11,6 +11,10 @@
       <div class="modal-header">
         <h5 class="modal-title" id="codeModalLabel">Código P0S1</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+        <!-- Aquí se cargará el contenido del archivo txt con scroll -->
+        <pre><code id="codeContent">Cargando...</code></pre>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
