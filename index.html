@@ -1,86 +1,116 @@
-<!-- Botón que abre la ventana flotante -->
-<h1>Pruebaaa</h1>
-<button id="openFloatingWindow" class="btn btn-primary mt-3">Ver Código</button><br>
-<a href="prueba.html">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventana Flotante</title>
+    
+    <!-- Estilos CSS -->
+    <style>
+      .floating-window {
+        position: fixed;
+        width: 400px;
+        height: 300px;
+        top: 20px;
+        right: 20px;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        overflow-y: auto;
+        display: none; /* Oculto por defecto */
+      }
 
-<!-- Ventana flotante -->
-<div id="floatingWindow" class="floating-window" style="display: none;">
-  <div class="floating-header">
-    <span>Código P0S1</span>
-    <button id="closeFloatingWindow" class="close-btn">&times;</button>
-  </div>
-  <div class="floating-body" id="codeContent" style="white-space: pre-wrap;">
-    <!-- Aquí se cargará el contenido del archivo txt -->
-    Cargando...
-  </div>
-</div>
+      .floating-header {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-<!-- Estilos CSS -->
-<style>
-  .floating-window {
-    position: fixed;
-    width: 400px;
-    height: 300px;
-    top: 20px;
-    right: 20px;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    overflow-y: auto;
-  }
-  
-  .floating-header {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .floating-body {
-    padding: 10px;
-    height: 230px; /* Ajusta el tamaño del área de contenido */
-    overflow-y: auto; /* Permite scroll si el contenido es grande */
-  }
-  
-  .close-btn {
-    background-color: transparent;
-    border: none;
-    font-size: 18px;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .close-btn:hover {
-    color: #ff0000;
-  }
-</style>
+      .floating-body {
+        padding: 10px;
+        height: 230px;
+        overflow-y: auto; /* Permitir scroll si el contenido es extenso */
+      }
 
-<!-- Script para abrir y cerrar la ventana flotante, y cargar el archivo -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-  $(document).ready(function () {
-    // Abrir la ventana flotante
-    $('#openFloatingWindow').on('click', function () {
-      $('#floatingWindow').show();
-      // Cargar el archivo txt
-      $.ajax({
-        url: 'P0S1_código.txt', // Ruta de tu archivo txt
-        dataType: 'text',
-        success: function (data) {
-          $('#codeContent').text(data); // Cargar el contenido en la ventana flotante
-        },
-        error: function () {
-          $('#codeContent').text('No se pudo cargar el archivo.');
-        }
+      .close-btn {
+        background-color: transparent;
+        border: none;
+        font-size: 18px;
+        color: white;
+        cursor: pointer;
+      }
+
+      .close-btn:hover {
+        color: #ff0000;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+</head>
+<body>
+
+    <h1>Prueba de Ventana Flotante</h1>
+
+    <!-- Botón que abre la ventana flotante -->
+    <button id="openFloatingWindow" class="btn btn-primary mt-3">Ver Código</button>
+
+    <!-- Enlace a otra página (prueba.html) -->
+    <a href="prueba.html">Ir a la Página de Prueba</a>
+
+    <!-- Ventana flotante -->
+    <div id="floatingWindow" class="floating-window">
+      <div class="floating-header">
+        <span>Código P0S1</span>
+        <button id="closeFloatingWindow" class="close-btn">&times;</button>
+      </div>
+      <div class="floating-body" id="codeContent" style="white-space: pre-wrap;">
+        <!-- Aquí se cargará el contenido del archivo txt -->
+        Cargando...
+      </div>
+    </div>
+
+    <!-- Script para abrir y cerrar la ventana flotante, y cargar el archivo -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // Abrir la ventana flotante
+        $('#openFloatingWindow').on('click', function () {
+          $('#floatingWindow').show();
+          // Cargar el archivo txt
+          $.ajax({
+            url: 'P0S1_código.txt', // Ruta de tu archivo txt
+            dataType: 'text',
+            success: function (data) {
+              $('#codeContent').text(data); // Cargar el contenido en la ventana flotante
+            },
+            error: function () {
+              $('#codeContent').text('No se pudo cargar el archivo.');
+            }
+          });
+        });
+
+        // Cerrar la ventana flotante
+        $('#closeFloatingWindow').on('click', function () {
+          $('#floatingWindow').hide();
+        });
       });
-    });
+    </script>
 
-    // Cerrar la ventana flotante
-    $('#closeFloatingWindow').on('click', function () {
-      $('#floatingWindow').hide();
-    });
-  });
-</script>
+</body>
+</html>
