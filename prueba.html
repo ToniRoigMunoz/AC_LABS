@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página de prueba HTML con varios elementos">
+    <title>Página de Prueba Completa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        footer {
+            margin-top: 50px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bienvenido a la Página de Prueba</h1>
+        <p>Esta es una página HTML con muchos elementos para realizar pruebas.</p>
+    </header>
+
+    <nav>
+        <a href="#section1">Sección 1</a>
+        <a href="#section2">Sección 2</a>
+        <a href="#section3">Sección 3</a>
+    </nav>
+
+    <section id="section1">
+        <h2>Sección 1: Introducción</h2>
+        <p>En esta sección, se introducen algunos elementos básicos como párrafos y listas.</p>
+
+        <h3>Lista Ordenada</h3>
+        <ol>
+            <li>Primer elemento</li>
+            <li>Segundo elemento</li>
+            <li>Tercer elemento</li>
+        </ol>
+
+        <h3>Lista Desordenada</h3>
+        <ul>
+            <li>Elemento A</li>
+            <li>Elemento B</li>
+            <li>Elemento C</li>
+        </ul>
+    </section>
+
+    <section id="section2">
+        <h2>Sección 2: Imágenes y Enlaces</h2>
+        <p>A continuación se muestra una imagen y un enlace:</p>
+
+        <img src="https://via.placeholder.com/400" alt="Imagen de prueba">
+
+        <p>Enlace de prueba: <a href="https://www.example.com" target="_blank">Ir a Example.com</a></p>
+    </section>
+
+    <section id="section3">
+        <h2>Sección 3: Tablas y Formularios</h2>
+        <p>Aquí tienes un ejemplo de una tabla y un formulario:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Producto A</td>
+                    <td>$10</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>Producto B</td>
+                    <td>$20</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="form-container">
+            <h3>Formulario de Contacto</h3>
+            <form action="#" method="POST">
+                <label for="nombre">Nombre:</label><br>
+                <input type="text" id="nombre" name="nombre" required><br><br>
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="mensaje">Mensaje:</label><br>
+                <textarea id="mensaje" name="mensaje" rows="5" required></textarea><br><br>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Página de Prueba. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
